@@ -1,0 +1,1129 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>User Page</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+    <style>
+        :root {
+            --color-base-dark: #121212;
+            --color-line-subtle: #222222;
+            --grid-spacing: 60px;
+            --header-height: 60px;
+            /* NEW: Light Mode Variables */
+            --color-base-light: #fff;
+            --color-text-light: #111;
+            --color-line-light: #ddd;
+            --color-card-light: #f5f5f5;
+            --color-card-border-light: #ccc;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--color-base-dark);
+            color: white;
+            margin: 0;
+            font-family: sans-serif;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            /* Add transition for smoothness */
+        }
+
+        /* --- LIGHT MODE CORE STYLES --- */
+        body.light-mode {
+            background-color: var(--color-base-light);
+            color: var(--color-text-light);
+        }
+
+        /* Style for Chrome, Edge, and Safari Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background-color: #333;
+            border-radius: 20px;
+            border: 3px solid #121212;
+        }
+
+        /* LIGHT MODE Scrollbar */
+        body.light-mode ::-webkit-scrollbar-thumb {
+            background-color: #bbb;
+            /* Lighter thumb for light mode */
+            border: 3px solid #fff;
+            /* White border for light mode */
+        }
+
+        /* Define the size and color of the grid */
+        .main-content {
+            /* DARK MODE Grid: Lines on #222222, background on #121212 */
+            background-image:
+                repeating-linear-gradient(to bottom,
+                    #222222 0px,
+                    transparent 2px,
+                    transparent 50px),
+                repeating-linear-gradient(to right,
+                    #222222 0px,
+                    transparent 2px,
+                    transparent 50px);
+
+            height: 100%;
+            width: 100%;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: -1;
+        }
+
+        /* LIGHT MODE Grid */
+        body.light-mode .main-content {
+            /* LIGHT MODE Grid: Lines on #ddd, background on #fff */
+            background-image:
+                repeating-linear-gradient(to bottom,
+                    var(--color-line-light) 0px,
+                    transparent 2px,
+                    transparent 50px),
+                repeating-linear-gradient(to right,
+                    var(--color-line-light) 0px,
+                    transparent 2px,
+                    transparent 50px);
+        }
+
+        header {
+            width: 100%;
+            height: var(--header-height);
+            /* Dark mode default */
+            background-color: rgba(30, 30, 30, 0.8);
+            position: fixed;
+            top: 0;
+            z-index: 10;
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding: 0 15px;
+            gap: 15px;
+            border-bottom: 1px solid var(--color-line-subtle);
+            transition: background-color 0.3s ease, border-bottom-color 0.3s ease;
+        }
+
+        /* LIGHT MODE Toggle Icon */
+        body.light-mode #themeToggle {
+            color: var(--color-text-light);
+        }
+
+        .logo {
+            position: fixed;
+            left: 30px;
+            top: 0;
+            height: 100px;
+            width: 90px;
+            background: #222;
+            border: 2px solid #333;
+            border-top: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 11;
+            font-size: 30px;
+            border-radius: 0px 0px 50px 50px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+            transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .logo a{
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        /* LIGHT MODE Logo */
+        body.light-mode .logo {
+            background: #fff;
+            border: 2px solid #ccc;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .name {
+            margin-left: 130px;
+            margin-right: auto;
+            font-size: 25px;
+            font-weight: 600;
+        }
+
+        .name a{
+            cursor: pointer;
+            color: inherit;
+            text-decoration: none;
+        }
+
+        body.light-mode .name {
+            color: #fff;
+        }
+
+        #themeToggle {
+            font-size: 25px;
+            transition: all 0.3s ease;
+        }
+
+        #themeToggle:hover {
+            transform: translateY(-2px);
+        }
+
+        body.light-mode #themeToggle {
+            color: #fff;
+        }
+
+        button {
+            background: #fff;
+            border: none;
+            color: black;
+            border: 1px solid #fff;
+            padding: 10px 15px;
+            border-radius: 10px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            background: transparent;
+            color: #fff;
+        }
+
+        button a{
+            color: inherit;
+            text-decoration: none;
+        }
+
+        body.light-mode button:hover {
+            background: #222;
+            color: #fff;
+        }
+
+        .profile-box {
+            position: absolute;
+            top: 70px;
+            /* adjust depending on your navbar */
+            right: 30px;
+            background: var(--color-base-dark);
+            border: 1px solid var(--color-base-light);
+            border-radius: 12px;
+            padding: 15px 20px;
+            color: #fff;
+            display: none;
+            width: auto;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+            z-index: 1000;
+        }
+
+        body.light-mode .profile-box {
+            background-color: #8EB69B;
+            border: 1px solid #0B2B26;
+            color: #0B2B26;
+        }
+
+        .profile-box p {
+            margin: 6px 0;
+            font-size: 14px;
+        }
+
+        .profile-box button {
+            margin-top: 10px;
+            width: 100%;
+            border: none;
+            padding: 8px;
+            border: 1px solid var(--color-base-light);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .profile-box button:hover {
+            background: #333;
+        }
+
+        .feature-section {
+            width: 100%;
+            padding: 100px 0;
+            background-color: transparent;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border-bottom: 0.1px solid #222;
+            transition: background-color 0.3s ease, border-bottom-color 0.3s ease;
+            z-index: 2;
+        }
+
+        /* LIGHT MODE .feature-section */
+        body.light-mode .feature-section {
+            background-color: transparent;
+            border-bottom: 0.1px solid black;
+        }
+
+        .feature-container {
+            width: 90%;
+            max-width: 1300px;
+            padding: 0 20px;
+            text-align: center;
+        }
+
+        .feature-container h2 {
+            font-size: clamp(1.8rem, 4vw, 2.5rem);
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .feature-container p.subtitle {
+            font-size: clamp(1rem, 2vw, 1.25rem);
+            opacity: 0.7;
+            margin-bottom: 40px;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+        }
+
+        .feature-card {
+            background-image: linear-gradient(145deg, #1c1c1c 0%, #1a1919 50%, #0a0a0a 100%);
+            border: 1px solid #333;
+            padding: 30px;
+            text-align: left;
+            border-radius: 12px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease, background 0.3s ease;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            min-height: 250px;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+            border-color: #555;
+        }
+
+        /* LIGHT MODE .feature-card */
+        body.light-mode .feature-card {
+            background-image: linear-gradient(145deg, #fff 0%, #d3cccc 50%, #7c7171 100%);
+            border: 1px solid var(--color-card-border-light);
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        body.light-mode .feature-card:hover {
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+
+        .circle {
+            background: #2a2a2a;
+            border: 2px solid #333;
+            color: #777;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 50px;
+            transition: background 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+        }
+
+        /* LIGHT MODE .circle */
+        body.light-mode .circle {
+            background: #505050;
+            border: #505050;
+        }
+
+        .feature-card .icon-box {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 24px;
+            color: #fff;
+            transition: color 0.3s ease;
+        }
+
+        /* LIGHT MODE .icon-box */
+        body.light-mode .feature-card .icon-box {
+            color: #111;
+        }
+
+        .feature-card h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-top: 0;
+            margin-bottom: 10px;
+            position: relative;
+        }
+
+        .feature-card .fa-angle-down {
+            font-size: 20px;
+            color: #777;
+            opacity: 1;
+            transition: opacity 0.3s ease, color 0.3s ease, transform 0.3s ease;
+        }
+
+        /* LIGHT MODE angle-down */
+        body.light-mode .feature-card .fa-angle-down {
+            color: #555;
+        }
+
+        .feature-card p {
+            font-size: 1rem;
+            line-height: 1.5;
+            opacity: 0.7;
+            flex-grow: 1;
+            transition: opacity 0.3s ease;
+        }
+
+        /* LIGHT MODE p in card */
+        body.light-mode .feature-card p {
+            opacity: 0.8;
+        }
+
+        .expanded-content {
+            max-height: 0;
+            overflow: hidden;
+            opacity: 0;
+            padding-top: 0;
+            transition: max-height 0.4s ease-in-out, opacity 0.4s ease-in-out, padding-top 0.4s ease-in-out;
+        }
+
+        .feature-card.expanded .expanded-content {
+            max-height: 500px;
+            opacity: 1;
+            padding-top: 10px;
+        }
+
+        .feature-card.expanded .fa-angle-down {
+            transform: rotate(180deg);
+        }
+
+        .feature-card hr {
+            border: none;
+            background-color: #777;
+            border-radius: 100px;
+            height: 0.2px;
+            transition: background-color 0.3s ease;
+        }
+
+        /* LIGHT MODE expanded hr */
+        body.light-mode .feature-card.expanded hr {
+            background-color: #ccc;
+        }
+
+        .fade-in-section {
+            opacity: 0;
+            /* Start invisible */
+            transform: translateY(20px);
+            /* Start slightly below its final position */
+            transition: opacity 0.6s ease-out, transform 0.8s ease-out;
+            /* Smooth transition */
+            /* Ensure hardware acceleration for smoother transforms */
+            will-change: opacity, transform;
+        }
+
+        /* Define the visible state */
+        .fade-in-section.is-visible {
+            opacity: 1;
+            /* Fully visible */
+            transform: translateY(0);
+            /* Slide up to final position */
+        }
+
+        /* Adjust the transition for the entire section container to avoid a jarring full-section jump */
+        .feature-section.fade-in-section,
+        .forth .feature-section.fade-in-section {
+            /* Sections themselves should primarily fade-in, not slide-up as much, to look better */
+            transition: opacity 1s ease-out;
+            transform: translateY(0);
+        }
+
+        /* The hero section already looks fine without this animation */
+        .hero.fade-in-section {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Ensure card children don't inherit the section's opacity:0 state, only the card's */
+        .feature-section.fade-in-section>* {
+            opacity: inherit;
+            transform: inherit;
+        }
+
+        /* You can delay individual cards for a staggered effect by adding a custom data attribute and using CSS selector */
+        .feature-grid .feature-card:nth-child(2) {
+            transition-delay: 0.1s;
+        }
+
+        .feature-grid .feature-card:nth-child(3) {
+            transition-delay: 0.2s;
+        }
+
+        .feature-grid .feature-card:nth-child(4) {
+            transition-delay: 0.3s;
+        }
+
+        .feature-grid .feature-card:nth-child(5) {
+            transition-delay: 0.4s;
+        }
+
+        .feature-grid .feature-card:nth-child(6) {
+            transition-delay: 0.5s;
+        }
+
+        .forth .feature-grid .feature-card:nth-child(2) {
+            transition-delay: 0.1s;
+        }
+
+        .forth .feature-grid .feature-card:nth-child(3) {
+            transition-delay: 0.2s;
+        }
+
+
+        /* --- NEW: Hero Section Entrance Animation --- */
+        @keyframes heroLoadIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+                /* Start 20px lower */
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="main-content">
+        <header>
+            <div class="logo"><a href="index.html"><i class="fa-brands fa-slack"></i></a></div>
+            <div class="name"><a href="index.html">Secure Voting</a></div>
+            <i id="themeToggle" class="fa-regular fa-lightbulb"></i>
+            <button id="signInBtn">Sign in</button>
+            <!-- 🔒 Profile Box -->
+            <div id="profileBox" class="profile-box">
+                <p><strong id="profileName">Name:</strong> <span id="userName"></span></p>
+                <p><strong id="profileEmail">Email:</strong> <span id="userEmail"></span></p>
+                <button id="logout">Logout</button>
+            </div>
+            <button><a href="admin.html">Create Voting</a></button>
+        </header>
+        <section class="feature-section fade-in-section">
+            <div class="feature-container">
+                <h2>User! Cast Your Vote Securely (Ongoing)</h2>
+                <p class="subtitle">
+                    Comprehensive verifiable cryptography and secure infrastructure to run and monitor reliable,
+                    transparent, and private digital elections.
+                </p>
+                <div class="feature-grid">
+
+                    <div class="feature-card fade-in-section">
+                        <div class="icon-box"><i class="circle fa-solid fa-square-poll-horizontal"></i><i
+                                class="fa-solid fa-angle-down"></i>
+                        </div>
+                        <h3>Vote for City Council Seat A</h3>
+                        <p>The election to decide the representative for City Council Seat A.</p>
+                        <div class="expanded-content">
+                            <hr>
+                            <form id="vote-form-1"
+                                style="display: flex; flex-direction: column; gap: 10px; padding: 10px 0;">
+                                <p style="opacity: 1; margin-bottom: 5px; font-weight: bold;">Select your candidate:</p>
+
+                                <div style="display: flex; align-items: center; gap: 10px;">
+                                    <input type="radio" id="candidateA" name="vote-option" value="Candidate A" required>
+                                    <label for="candidateA"
+                                        style="opacity: 1; color: inherit; font-size: 1rem;">Candidate A - Alice</label>
+                                </div>
+
+                                <div style="display: flex; align-items: center; gap: 10px;">
+                                    <input type="radio" id="candidateB" name="vote-option" value="Candidate B">
+                                    <label for="candidateB"
+                                        style="opacity: 1; color: inherit; font-size: 1rem;">Candidate B - Bob</label>
+                                </div>
+
+                                <div style="display: flex; align-items: center; gap: 10px;">
+                                    <input type="radio" id="candidateC" name="vote-option" value="Candidate C">
+                                    <label for="candidateC"
+                                        style="opacity: 1; color: inherit; font-size: 1rem;">Candidate C -
+                                        Charlie</label>
+                                </div>
+
+                                <button type="submit"
+                                    style="margin-top: 15px; background: #76ff03; color: black; border: 1px solid #76ff03;">
+                                    Cast Vote
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div class="feature-card fade-in-section">
+                        <div class="icon-box"><i class="circle fa-solid fa-square-poll-horizontal"></i><i
+                                class="fa-solid fa-angle-down"></i>
+                        </div>
+                        <h3>Vote for City Council Seat A</h3>
+                        <p>The election to decide the representative for City Council Seat A.</p>
+                        <div class="expanded-content">
+                            <hr>
+                            <form id="vote-form-2"
+                                style="display: flex; flex-direction: column; gap: 10px; padding: 10px 0;">
+                                <p style="opacity: 1; margin-bottom: 5px; font-weight: bold;">Select your candidate:</p>
+
+                                <div style="display: flex; align-items: center; gap: 10px;">
+                                    <input type="radio" id="candidateA" name="vote-option" value="Candidate A" required>
+                                    <label for="candidateA"
+                                        style="opacity: 1; color: inherit; font-size: 1rem;">Candidate A - Alice</label>
+                                </div>
+
+                                <div style="display: flex; align-items: center; gap: 10px;">
+                                    <input type="radio" id="candidateB" name="vote-option" value="Candidate B">
+                                    <label for="candidateB"
+                                        style="opacity: 1; color: inherit; font-size: 1rem;">Candidate B - Bob</label>
+                                </div>
+
+                                <div style="display: flex; align-items: center; gap: 10px;">
+                                    <input type="radio" id="candidateC" name="vote-option" value="Candidate C">
+                                    <label for="candidateC"
+                                        style="opacity: 1; color: inherit; font-size: 1rem;">Candidate C -
+                                        Charlie</label>
+                                </div>
+
+                                <button type="submit"
+                                    style="margin-top: 20px; background: #76ff03; color: black; border: 1px solid #76ff03;">
+                                    Cast Vote
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div class="feature-card fade-in-section">
+                        <div class="icon-box"><i class="circle fa-solid fa-square-poll-horizontal"></i><i
+                                class="fa-solid fa-angle-down"></i>
+                        </div>
+                        <h3>Vote for City Council Seat A</h3>
+                        <p>The election to decide the representative for City Council Seat A.</p>
+                        <div class="expanded-content">
+                            <hr>
+                            <form id="vote-form-3"
+                                style="display: flex; flex-direction: column; gap: 10px; padding: 10px 0;">
+                                <p style="opacity: 1; margin-bottom: 5px; font-weight: bold;">Select your candidate:</p>
+
+                                <div style="display: flex; align-items: center; gap: 10px;">
+                                    <input type="radio" id="candidateA" name="vote-option" value="Candidate A" required>
+                                    <label for="candidateA"
+                                        style="opacity: 1; color: inherit; font-size: 1rem;">Candidate A - Alice</label>
+                                </div>
+
+                                <div style="display: flex; align-items: center; gap: 10px;">
+                                    <input type="radio" id="candidateB" name="vote-option" value="Candidate B">
+                                    <label for="candidateB"
+                                        style="opacity: 1; color: inherit; font-size: 1rem;">Candidate B - Bob</label>
+                                </div>
+
+                                <div style="display: flex; align-items: center; gap: 10px;">
+                                    <input type="radio" id="candidateC" name="vote-option" value="Candidate C">
+                                    <label for="candidateC"
+                                        style="opacity: 1; color: inherit; font-size: 1rem;">Candidate C -
+                                        Charlie</label>
+                                </div>
+
+                                <button type="submit"
+                                    style="margin-top: 20px; background: #76ff03; color: black; border: 1px solid #76ff03;">
+                                    Cast Vote
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div class="feature-card fade-in-section">
+                        <div class="icon-box"><i class="circle fa-solid fa-square-poll-horizontal"></i><i
+                                class="fa-solid fa-angle-down"></i>
+                        </div>
+                        <h3>Vote for City Council Seat A</h3>
+                        <p>The election to decide the representative for City Council Seat A.</p>
+                        <div class="expanded-content">
+                            <hr>
+                            <form id="vote-form-4"
+                                style="display: flex; flex-direction: column; gap: 10px; padding: 10px 0;">
+                                <p style="opacity: 1; margin-bottom: 5px; font-weight: bold;">Select your candidate:</p>
+
+                                <div style="display: flex; align-items: center; gap: 10px;">
+                                    <input type="radio" id="candidateA" name="vote-option" value="Candidate A" required>
+                                    <label for="candidateA"
+                                        style="opacity: 1; color: inherit; font-size: 1rem;">Candidate A - Alice</label>
+                                </div>
+
+                                <div style="display: flex; align-items: center; gap: 10px;">
+                                    <input type="radio" id="candidateB" name="vote-option" value="Candidate B">
+                                    <label for="candidateB"
+                                        style="opacity: 1; color: inherit; font-size: 1rem;">Candidate B - Bob</label>
+                                </div>
+
+                                <div style="display: flex; align-items: center; gap: 10px;">
+                                    <input type="radio" id="candidateC" name="vote-option" value="Candidate C">
+                                    <label for="candidateC"
+                                        style="opacity: 1; color: inherit; font-size: 1rem;">Candidate C -
+                                        Charlie</label>
+                                </div>
+
+                                <button type="submit"
+                                    style="margin-top: 20px; background: #76ff03; color: black; border: 1px solid #76ff03;">
+                                    Cast Vote
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div class="feature-card fade-in-section">
+                        <div class="icon-box"><i class="circle fa-solid fa-square-poll-horizontal"></i><i
+                                class="fa-solid fa-angle-down"></i>
+                        </div>
+                        <h3>Vote for City Council Seat A</h3>
+                        <p>The election to decide the representative for City Council Seat A.</p>
+                        <div class="expanded-content">
+                            <hr>
+                            <form id="vote-form-5"
+                                style="display: flex; flex-direction: column; gap: 10px; padding: 10px 0;">
+                                <p style="opacity: 1; margin-bottom: 5px; font-weight: bold;">Select your candidate:</p>
+
+                                <div style="display: flex; align-items: center; gap: 10px;">
+                                    <input type="radio" id="candidateA" name="vote-option" value="Candidate A" required>
+                                    <label for="candidateA"
+                                        style="opacity: 1; color: inherit; font-size: 1rem;">Candidate A - Alice</label>
+                                </div>
+
+                                <div style="display: flex; align-items: center; gap: 10px;">
+                                    <input type="radio" id="candidateB" name="vote-option" value="Candidate B">
+                                    <label for="candidateB"
+                                        style="opacity: 1; color: inherit; font-size: 1rem;">Candidate B - Bob</label>
+                                </div>
+
+                                <div style="display: flex; align-items: center; gap: 10px;">
+                                    <input type="radio" id="candidateC" name="vote-option" value="Candidate C">
+                                    <label for="candidateC"
+                                        style="opacity: 1; color: inherit; font-size: 1rem;">Candidate C -
+                                        Charlie</label>
+                                </div>
+
+                                <button type="submit"
+                                    style="margin-top: 20px; background: #76ff03; color: black; border: 1px solid #76ff03;">
+                                    Cast Vote
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div class="feature-card fade-in-section">
+                        <div class="icon-box"><i class="circle fa-solid fa-square-poll-horizontal"></i><i
+                                class="fa-solid fa-angle-down"></i>
+                        </div>
+                        <h3>Vote for City Council Seat A</h3>
+                        <p>The election to decide the representative for City Council Seat A.</p>
+                        <div class="expanded-content">
+                            <hr>
+                            <form id="vote-form-6"
+                                style="display: flex; flex-direction: column; gap: 10px; padding: 10px 0;">
+                                <p style="opacity: 1; margin-bottom: 5px; font-weight: bold;">Select your candidate:</p>
+
+                                <div style="display: flex; align-items: center; gap: 10px;">
+                                    <input type="radio" id="candidateA" name="vote-option" value="Candidate A" required>
+                                    <label for="candidateA"
+                                        style="opacity: 1; color: inherit; font-size: 1rem;">Candidate A - Alice</label>
+                                </div>
+
+                                <div style="display: flex; align-items: center; gap: 10px;">
+                                    <input type="radio" id="candidateB" name="vote-option" value="Candidate B">
+                                    <label for="candidateB"
+                                        style="opacity: 1; color: inherit; font-size: 1rem;">Candidate B - Bob</label>
+                                </div>
+
+                                <div style="display: flex; align-items: center; gap: 10px;">
+                                    <input type="radio" id="candidateC" name="vote-option" value="Candidate C">
+                                    <label for="candidateC"
+                                        style="opacity: 1; color: inherit; font-size: 1rem;">Candidate C -
+                                        Charlie</label>
+                                </div>
+
+                                <button type="submit"
+                                    style="margin-top: 20px; background: #76ff03; color: black; border: 1px solid #76ff03;">
+                                    Cast Vote
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="feature-section fade-in-section">
+            <div class="feature-container">
+                <h2>Voting Results</h2>
+                <p class="subtitle">
+                    Comprehensive verifiable cryptography and secure infrastructure to run and monitor reliable,
+                    transparent, and private digital elections.
+                </p>
+                <div class="feature-grid">
+
+                    <div class="feature-card fade-in-section">
+                        <div class="icon-box"><i class="circle fa-solid fa-square-poll-vertical"></i><i
+                                class="fa-solid fa-angle-down"></i>
+                        </div>
+                        <h3>City Council Seat A - Final Results</h3>
+                        <p>The definitive outcome of the City Council Seat A election.</p>
+                        <div class="expanded-content">
+                            <hr>
+                            <div style="text-align: left; padding: 5px 0;">
+                                <p
+                                    style="font-weight: bold; opacity: 1; margin-bottom: 15px; color: #76ff03; font-size: 1.1rem;">
+                                    &#127942; Winner: Candidate B - Bob
+                                </p>
+                                <p style="opacity: 1; margin-bottom: 5px; font-weight: bold;">
+                                    Total Valid Votes Cast: <span style="color: #76ff03;">4,582</span>
+                                </p>
+                                <p style="opacity: 1; margin: 8px 0;">
+                                    Candidate A - Alice: 1,201 votes (26.2%)
+                                </p>
+                                <p style="opacity: 1; margin: 8px 0; font-weight: bold;">
+                                    Candidate B - Bob: 1,895 votes (41.4%)
+                                </p>
+                                <p style="opacity: 1; margin: 8px 0;">
+                                    Candidate C - Charlie: 1,486 votes (32.4%)
+                                </p>
+                                <p style="opacity: 0.8; margin-top: 20px; font-size: 0.9rem;">
+                                    *Results are cryptographically verified and secured on the ledger.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="feature-card fade-in-section">
+                        <div class="icon-box"><i class="circle fa-solid fa-square-poll-vertical"></i><i
+                                class="fa-solid fa-angle-down"></i>
+                        </div>
+                        <h3>City Council Seat A - Final Results</h3>
+                        <p>The definitive outcome of the City Council Seat A election.</p>
+                        <div class="expanded-content">
+                            <hr>
+                            <div style="text-align: left; padding: 5px 0;">
+                                <p
+                                    style="font-weight: bold; opacity: 1; margin-bottom: 15px; color: #76ff03; font-size: 1.1rem;">
+                                    &#127942; Winner: Candidate B - Bob
+                                </p>
+                                <p style="opacity: 1; margin-bottom: 5px; font-weight: bold;">
+                                    Total Valid Votes Cast: <span style="color: #76ff03;">4,582</span>
+                                </p>
+                                <p style="opacity: 1; margin: 8px 0;">
+                                    Candidate A - Alice: 1,201 votes (26.2%)
+                                </p>
+                                <p style="opacity: 1; margin: 8px 0; font-weight: bold;">
+                                    Candidate B - Bob: 1,895 votes (41.4%)
+                                </p>
+                                <p style="opacity: 1; margin: 8px 0;">
+                                    Candidate C - Charlie: 1,486 votes (32.4%)
+                                </p>
+                                <p style="opacity: 0.8; margin-top: 20px; font-size: 0.9rem;">
+                                    *Results are cryptographically verified and secured on the ledger.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="feature-card fade-in-section">
+                        <div class="icon-box"><i class="circle fa-solid fa-square-poll-vertical"></i><i
+                                class="fa-solid fa-angle-down"></i>
+                        </div>
+                        <h3>City Council Seat A - Final Results</h3>
+                        <p>The definitive outcome of the City Council Seat A election.</p>
+                        <div class="expanded-content">
+                            <hr>
+                            <div style="text-align: left; padding: 5px 0;">
+                                <p
+                                    style="font-weight: bold; opacity: 1; margin-bottom: 15px; color: #76ff03; font-size: 1.1rem;">
+                                    &#127942; Winner: Candidate B - Bob
+                                </p>
+                                <p style="opacity: 1; margin-bottom: 5px; font-weight: bold;">
+                                    Total Valid Votes Cast: <span style="color: #76ff03;">4,582</span>
+                                </p>
+                                <p style="opacity: 1; margin: 8px 0;">
+                                    Candidate A - Alice: 1,201 votes (26.2%)
+                                </p>
+                                <p style="opacity: 1; margin: 8px 0; font-weight: bold;">
+                                    Candidate B - Bob: 1,895 votes (41.4%)
+                                </p>
+                                <p style="opacity: 1; margin: 8px 0;">
+                                    Candidate C - Charlie: 1,486 votes (32.4%)
+                                </p>
+                                <p style="opacity: 0.8; margin-top: 20px; font-size: 0.9rem;">
+                                    *Results are cryptographically verified and secured on the ledger.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="feature-section fade-in-section">
+            <div class="feature-container">
+                <h2>My Voting History</h2>
+                <p class="subtitle">
+                    Comprehensive verifiable cryptography and secure infrastructure to run and monitor reliable,
+                    transparent, and private digital elections.
+                </p>
+                <div class="feature-grid">
+
+                    <div class="feature-card fade-in-section">
+                        <div class="icon-box"><i class="circle fa-solid fa-clock-rotate-left"></i><i
+                                class="fa-solid fa-angle-down"></i>
+                        </div>
+                        <h3>City Council Seat A Election (Voted)</h3>
+                        <p>Your record for the City Council Seat A election held on 2025/08/15.</p>
+                        <div class="expanded-content">
+                            <hr>
+                            <div style="text-align: left; padding: 5px 0;">
+                                <p style="opacity: 1; margin-bottom: 10px; font-weight: bold;">
+                                    Your Selection: <span style="color: #76ff03;">Candidate C - Charlie</span>
+                                </p>
+                                <p style="opacity: 1; margin: 8px 0;">
+                                    Election Result: <span style="color: #76ff03;">Candidate B - Bob</span> won.
+                                </p>
+                                <p style="opacity: 1; margin: 8px 0; font-weight: bold;">
+                                    Verification Code: <span
+                                        style="font-family: monospace; color: #ccc;">A1B2C3D4E5F67890</span>
+                                </p>
+                                <p style="opacity: 0.8; margin-top: 20px; font-size: 0.9rem;">
+                                    Use your unique Verification Code to confirm your encrypted vote was included in the
+                                    final tally.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="feature-card fade-in-section">
+                        <div class="icon-box"><i class="circle fa-solid fa-clock-rotate-left"></i><i
+                                class="fa-solid fa-angle-down"></i>
+                        </div>
+                        <h3>City Council Seat A Election (Voted)</h3>
+                        <p>Your record for the City Council Seat A election held on 2025/08/15.</p>
+                        <div class="expanded-content">
+                            <hr>
+                            <div style="text-align: left; padding: 5px 0;">
+                                <p style="opacity: 1; margin-bottom: 10px; font-weight: bold;">
+                                    Your Selection: <span style="color: #76ff03;">Candidate C - Charlie</span>
+                                </p>
+                                <p style="opacity: 1; margin: 8px 0;">
+                                    Election Result: <span style="color: #76ff03;">Candidate B - Bob</span> won.
+                                </p>
+                                <p style="opacity: 1; margin: 8px 0; font-weight: bold;">
+                                    Verification Code: <span
+                                        style="font-family: monospace; color: #ccc;">A1B2C3D4E5F67890</span>
+                                </p>
+                                <p style="opacity: 0.8; margin-top: 20px; font-size: 0.9rem;">
+                                    Use your unique Verification Code to confirm your encrypted vote was included in the
+                                    final tally.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+    <script>
+        // === Main Script (Runs after HTML is loaded) ===
+
+        document.addEventListener("DOMContentLoaded", () => {
+
+            // === 🎯 Element Declarations ===
+            const themeToggle = document.getElementById("themeToggle");
+            const logoutBtn = document.getElementById("logoutBtn");
+            const signInBtn = document.getElementById("signInBtn");
+            const profileBox = document.getElementById("profileBox");
+            const logout = document.getElementById("logout"); // Profile box logout
+
+            if (logoutBtn) {
+                logoutBtn.addEventListener("click", () => {
+                    localStorage.removeItem("loggedIn");
+                    localStorage.removeItem("loggedInUser");
+                    window.location.href = "login.html";
+                });
+            }
+
+            if (signInBtn) {
+                signInBtn.addEventListener("click", () => {
+                    const user = JSON.parse(localStorage.getItem("loggedInUser"));
+                    const isLoggedIn = localStorage.getItem("loggedIn");
+
+                    if (user && isLoggedIn === "true") {
+                        document.getElementById("userName").textContent = user.username;
+                        document.getElementById("userEmail").textContent = user.email || "No email found";
+                        profileBox.style.display = profileBox.style.display === "block" ? "none" : "block";
+                    } else {
+                        alert("Please log in first!");
+                        window.location.href = "login.html";
+                    }
+                });
+            }
+
+            if (profileBox && signInBtn) {
+                document.addEventListener("click", (event) => {
+                    if (!profileBox.contains(event.target) && event.target !== signInBtn) {
+                        profileBox.style.display = "none";
+                    }
+                });
+            }
+
+            if (logout) {
+                logout.addEventListener("click", () => {
+                    localStorage.removeItem("loggedIn");
+                    localStorage.removeItem("loggedInUser");
+                    window.location.href = "login.html";
+                });
+            }
+
+            if (themeToggle) {
+                themeToggle.addEventListener("click", () => {
+                    document.body.classList.toggle("light-mode");
+
+                    if (document.body.classList.contains("light-mode")) {
+                        themeToggle.classList.replace("fa-regular", "fa-solid");
+                        localStorage.setItem("theme", "light");
+                    } else {
+                        themeToggle.classList.replace("fa-solid", "fa-regular");
+                        localStorage.setItem("theme", "dark");
+                    }
+                });
+            }
+
+            // === Page Load / Initialization Logic ===
+            const user = JSON.parse(localStorage.getItem("loggedInUser"));
+            const isLoggedIn = localStorage.getItem("loggedIn");
+
+            if (user && isLoggedIn === "true") {
+                const welcomeEl = document.getElementById("welcome");
+                if (welcomeEl) welcomeEl.textContent = `Welcome, ${user.username}!`;
+            } else {
+                window.location.href = "login.html";
+            }
+
+            if (localStorage.getItem("theme") === "light") {
+                document.body.classList.add("light-mode");
+                if (themeToggle) {
+                    themeToggle.classList.replace("fa-regular", "fa-solid");
+                }
+            }
+
+            // === 🌟 NEW: FADE-IN ON SCROLL LOGIC (Intersection Observer) 🌟 ===
+            // === 🌟 NEW: FADE-IN ON SCROLL LOGIC (Intersection Observer) 🌟 ===
+            // We no longer unobserve the element, allowing it to toggle state
+            const fadeInObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    // isIntersecting is true when the element is in the viewport
+                    if (entry.isIntersecting) {
+                        // FADE IN & SLIDE UP
+                        entry.target.classList.add('is-visible');
+                    } else {
+                        // FADE OUT & SLIDE DOWN (The reverse animation)
+                        entry.target.classList.remove('is-visible');
+                    }
+                });
+            }, {
+                // You may need to adjust the threshold for better control
+                // Threshold 0.1 means the callback fires when 10% of the element is visible/invisible
+                rootMargin: "0px",
+                threshold: 0.1
+            });
+
+            // Get all elements that should animate
+            const elementsToAnimate = document.querySelectorAll('.fade-in-section');
+
+            // Start observing each element
+            elementsToAnimate.forEach(element => {
+                fadeInObserver.observe(element);
+            });
+            // === 🌟 END NEW: FADE-IN ON SCROLL LOGIC 🌟 ===
+        });
+
+        document.addEventListener('DOMContentLoaded', function () {
+            // 1. Find all the arrow buttons
+            const toggleButtons = document.querySelectorAll('.icon-box, .fa-angle-down');
+
+            // 2. Loop through each button and attach an event listener
+            toggleButtons.forEach(button => {
+                button.addEventListener('click', function (event) {
+                    // Prevent the default link behavior if applicable, and stop propagation
+                    event.preventDefault();
+                    event.stopPropagation();
+
+                    // 3. Find the parent card element
+                    const card = button.closest('.feature-card');
+
+                    // 4. Toggle the 'expanded' class on the card
+                    // This will trigger the CSS transitions
+                    card.classList.toggle('expanded');
+                });
+            });
+        });
+
+        // Add this new section inside the <script> tags in user.html
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const voteForm = document.getElementById('vote-form-1');
+
+            if (voteForm) {
+                voteForm.addEventListener('submit', function (e) {
+                    e.preventDefault(); // Stop the form from submitting normally
+
+                    // Find the selected radio button
+                    const selectedOption = document.querySelector('input[name="vote-option"]:checked');
+
+                    if (selectedOption) {
+                        const vote = selectedOption.value;
+
+                        // ⚠️ In a real application, you would send this data to a server.
+                        // For this front-end demo, we'll just simulate a successful vote.
+
+                        // Here's the simulated logic:
+                        console.log("Voted for: " + vote);
+                        alert(`You have successfully cast your vote for: ${vote}! Your vote is being secured.`);
+
+                        // You would typically redirect the user or update the UI
+                        // e.g., voteForm.innerHTML = '<p>✅ **VOTE CAST!** You selected: ' + vote + '</p>';
+
+                    } else {
+                        alert('Please select a candidate before casting your vote.');
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+
+</html>
