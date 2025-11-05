@@ -155,7 +155,7 @@
             transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
         }
 
-        .logo a{
+        .logo a {
             cursor: pointer;
             text-decoration: none;
             color: inherit;
@@ -175,7 +175,7 @@
             font-weight: 600;
         }
 
-        .name a{
+        .name a {
             cursor: pointer;
             text-decoration: none;
             color: inherit;
@@ -256,7 +256,7 @@
             font-size: 15px;
         }
 
-        button a{
+        button a {
             color: inherit;
             text-decoration: none;
         }
@@ -328,20 +328,127 @@
             color: #111;
         }
 
-        .second {
+        .second-kanban {
             width: 80%;
-            height: 80vh;
-            padding: 0px 20px;
-            display: flex;
-            flex-direction: row;
-            align-items: flex-end;
+            min-height: 65vh;
             background: #222;
-            border: 2px solid #333;
-            border-bottom: none;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            padding: 60px 20px;
+            border-bottom: 0.1px solid #222;
             border-radius: 10px 10px 0px 0px;
-            z-index: 2;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
             transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+        }
+
+        body.light-mode .second-kanban {
+            background-color: var(--color-base-light);
+            border-bottom: 0.1px solid #ccc;
+        }
+
+        .kanban-container {
+            width: 100%;
+            max-width: 1600px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* --- Kanban Board --- */
+        .kanban-board {
+            flex-grow: 1;
+            padding: 20px;
+            display: flex;
+            gap: 15px;
+            overflow-x: auto;
+        }
+
+        .kanban-column {
+            flex: 0 0 300px;
+            /* Fixed width for columns */
+            padding: 10px;
+            background-color: transparent;
+            border-radius: 8px;
+            min-height: 100%;
+            max-height: 600px;
+            overflow-y: auto;
+        }
+
+        body.light-mode .kanban-column {
+            background-color: #fff;
+        }
+
+        .task-card {
+            background: #121212;
+            border: 1px solid #444;
+            border-radius: 6px;
+            padding: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .task-card:hover {
+            transform: translateY(-2px);
+            border-color: #76ff03;
+        }
+
+        body.light-mode .task-card {
+            background: #fff;
+            border: 1px solid #ccc;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        body.light-mode .task-card:hover {
+            border-color: #0b2b26;
+        }
+
+        .task-title {
+            font-size: 0.95rem;
+            font-weight: 600;
+            margin: 8px 0 5px 0;
+            color: white;
+        }
+
+        body.light-mode .task-title {
+            color: #111;
+        }
+
+        .task-description {
+            font-size: 0.8rem;
+            color: #999;
+            margin: 0 0 15px 0;
+            opacity: 1;
+        }
+
+        body.light-mode .task-description {
+            color: #666;
+        }
+
+        .task-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px dashed #333;
+            padding-top: 10px;
+        }
+
+        body.light-mode .task-footer {
+            border-top: 1px dashed #ddd;
+        }
+
+        .avatars {
+            /* Placeholder circles for avatar images */
+            font-size: 0.8rem;
+            color: #76ff03;
+            display: flex;
+            gap: 5px;
+        }
+
+        .due-date {
+            font-size: 0.75rem;
+            color: #999;
         }
 
         /* --- Updated CSS for the Feature Cards --- */
@@ -689,7 +796,7 @@
             transition: color 0.3s ease;
         }
 
-        body.light-mode .footer-brand .logo{
+        body.light-mode .footer-brand .logo {
             background: transparent;
             border: none;
         }
@@ -752,7 +859,7 @@
             opacity: 0.6;
         }
 
-        .footer-bottom p{
+        .footer-bottom p {
             color: #ccc;
         }
 
@@ -763,7 +870,7 @@
             transition: color 0.3s ease;
         }
 
-        .social-icons i{
+        .social-icons i {
             transition: all 0.2s ease;
         }
 
@@ -865,7 +972,7 @@
             transition: opacity 1s ease-out;
             transform: translateY(0);
         }
-        
+
         /* The hero section already looks fine without this animation */
         .hero.fade-in-section {
             opacity: 1;
@@ -873,52 +980,108 @@
         }
 
         /* Ensure card children don't inherit the section's opacity:0 state, only the card's */
-        .feature-section.fade-in-section > * {
+        .feature-section.fade-in-section>* {
             opacity: inherit;
             transform: inherit;
         }
 
         /* You can delay individual cards for a staggered effect by adding a custom data attribute and using CSS selector */
-        .feature-grid .feature-card:nth-child(2) { transition-delay: 0.1s; }
-        .feature-grid .feature-card:nth-child(3) { transition-delay: 0.2s; }
-        .feature-grid .feature-card:nth-child(4) { transition-delay: 0.3s; }
-        .feature-grid .feature-card:nth-child(5) { transition-delay: 0.4s; }
-        .feature-grid .feature-card:nth-child(6) { transition-delay: 0.5s; }
+        .feature-grid .feature-card:nth-child(2) {
+            transition-delay: 0.1s;
+        }
 
-        .forth .feature-grid .feature-card:nth-child(2) { transition-delay: 0.1s; }
-        .forth .feature-grid .feature-card:nth-child(3) { transition-delay: 0.2s; }
+        .feature-grid .feature-card:nth-child(3) {
+            transition-delay: 0.2s;
+        }
+
+        .feature-grid .feature-card:nth-child(4) {
+            transition-delay: 0.3s;
+        }
+
+        .feature-grid .feature-card:nth-child(5) {
+            transition-delay: 0.4s;
+        }
+
+        .feature-grid .feature-card:nth-child(6) {
+            transition-delay: 0.5s;
+        }
+
+        .forth .feature-grid .feature-card:nth-child(2) {
+            transition-delay: 0.1s;
+        }
+
+        .forth .feature-grid .feature-card:nth-child(3) {
+            transition-delay: 0.2s;
+        }
 
 
         /* --- NEW: Hero Section Entrance Animation --- */
-    @keyframes heroLoadIn {
-        from {
+        @keyframes heroLoadIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+                /* Start 20px lower */
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Apply the animation to the hero section content */
+        .hero h1,
+        .hero p,
+        .hero .btn-box {
             opacity: 0;
-            transform: translateY(20px); /* Start 20px lower */
+            /* Initially hide all elements */
+            animation: heroLoadIn 0.8s ease-out forwards;
         }
-        to {
-            opacity: 1;
-            transform: translateY(0);
+
+        /* Add staggered delays for a cooler effect */
+        .hero h1 {
+            animation-delay: 0.2s;
+            /* H1 loads first */
         }
-    }
 
-    /* Apply the animation to the hero section content */
-    .hero h1, .hero p, .hero .btn-box {
-        opacity: 0; /* Initially hide all elements */
-        animation: heroLoadIn 0.8s ease-out forwards;
-    }
+        .hero p {
+            animation-delay: 0.5s;
+            /* Paragraph loads second */
+        }
 
-    /* Add staggered delays for a cooler effect */
-    .hero h1 {
-        animation-delay: 0.2s; /* H1 loads first */
-    }
+        .hero .btn-box {
+            animation-delay: 0.8s;
+            /* Buttons load last */
+        }
 
-    .hero p {
-        animation-delay: 0.5s; /* Paragraph loads second */
-    }
 
-    .hero .btn-box {
-        animation-delay: 0.8s; /* Buttons load last */
-    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        /* NEW KANBAN 
+
+        /* ... rest of existing CSS ... */
     </style>
 </head>
 
@@ -946,9 +1109,86 @@
                 <button class="btn2"><a href="admin.html">Create Voting</a></button>
             </div>
         </div>
-        <section class="first"></section>
-        <section class="second">
 
+        <section class="first"></section>
+
+        <section class="second-kanban fade-in-section">
+            <div class="kanban-container">
+                <div class="kanban-board">
+                    <div class="kanban-column">
+                        <div class="task-card">
+                            <p class="task-title">Review regulatory compliance forms</p>
+                            <p class="task-description">Verify new voter ID requirements for 2026 cycle.</p>
+                            <div class="task-footer">
+                                <div class="avatars"><span>&#9679;</span><span>&#9679;</span></div>
+                                <span class="due-date">Jan 15</span>
+                            </div>
+                        </div>
+                        <div class="task-card">
+                            <p class="task-title">Voter Awareness Campaign</p>
+                            <p class="task-description">Finalize digital and print materials for public launch.</p>
+                            <div class="task-footer">
+                                <div class="avatars"></div>
+                                <span class="due-date">Jan 22</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="kanban-column">
+                        <div class="task-card">
+                            <p class="task-title">Verify Zero-Knowledge Proof modules</p>
+                            <p class="task-description">Run comprehensive end-to-end privacy verification tests.</p>
+                            <div class="task-footer">
+                                <div class="avatars"><span>&#9679;</span><span>&#9679;</span><span>&#9679;</span></div>
+                                <span class="due-date">Feb 18</span>
+                            </div>
+                        </div>
+                        <div class="task-card">
+                            <p class="task-title">DDoS Mitigation Load Test</p>
+                            <p class="task-description">Simulate high traffic loads across all geo-regions.</p>
+                            <div class="task-footer">
+                                <div class="avatars"></div>
+                                <span class="due-date">Feb 19</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="kanban-column">
+                        <div class="task-card">
+                            <p class="task-title">City Council Seat B (Monitor)</p>
+                            <p class="task-description">Current voter turnout: 45%. Monitoring fraud alerts.</p>
+                            <div class="task-footer">
+                                <div class="avatars"><span>&#9679;</span></div>
+                                <span class="due-date">Closing May 23</span>
+                            </div>
+                        </div>
+                        <div class="task-card">
+                            <p class="task-title">School Board Referendum (Monitor)</p>
+                            <p class="task-description">Tallying anonymized ballots every hour.</p>
+                            <div class="task-footer">
+                                <div class="avatars"></div>
+                                <span class="due-date">Closing May 17</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="kanban-column">
+                        <div class="task-card">
+                            <p class="task-title">City Council Seat A - Results Verified</p>
+                            <p class="task-description">Audit complete. Results published to public ledger.</p>
+                            <div class="task-footer">
+                                <div class="avatars"><span>&#9679;</span></div>
+                                <span class="due-date">Closed May 16</span>
+                            </div>
+                        </div>
+                        <div class="task-card">
+                            <p class="task-title">Regional Budget Vote - Finalized</p>
+                            <p class="task-description">Final voter turnout: 61.2%. All verifiable proofs generated.</p>
+                            <div class="task-footer">
+                                <div class="avatars"><span>&#9679;</span><span>&#9679;</span></div>
+                                <span class="due-date">Closed May 15</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </section>
         <section class="feature-section fade-in-section">
             <div class="feature-container">
@@ -1260,33 +1500,33 @@
 
             // === 🌟 NEW: FADE-IN ON SCROLL LOGIC (Intersection Observer) 🌟 ===
             // === 🌟 NEW: FADE-IN ON SCROLL LOGIC (Intersection Observer) 🌟 ===
-// We no longer unobserve the element, allowing it to toggle state
-const fadeInObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        // isIntersecting is true when the element is in the viewport
-        if (entry.isIntersecting) {
-            // FADE IN & SLIDE UP
-            entry.target.classList.add('is-visible');
-        } else {
-            // FADE OUT & SLIDE DOWN (The reverse animation)
-            entry.target.classList.remove('is-visible');
-        }
-    });
-}, {
-    // You may need to adjust the threshold for better control
-    // Threshold 0.1 means the callback fires when 10% of the element is visible/invisible
-    rootMargin: "0px",
-    threshold: 0.1 
-});
+            // We no longer unobserve the element, allowing it to toggle state
+            const fadeInObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    // isIntersecting is true when the element is in the viewport
+                    if (entry.isIntersecting) {
+                        // FADE IN & SLIDE UP
+                        entry.target.classList.add('is-visible');
+                    } else {
+                        // FADE OUT & SLIDE DOWN (The reverse animation)
+                        entry.target.classList.remove('is-visible');
+                    }
+                });
+            }, {
+                // You may need to adjust the threshold for better control
+                // Threshold 0.1 means the callback fires when 10% of the element is visible/invisible
+                rootMargin: "0px",
+                threshold: 0.1
+            });
 
-// Get all elements that should animate
-const elementsToAnimate = document.querySelectorAll('.fade-in-section');
+            // Get all elements that should animate
+            const elementsToAnimate = document.querySelectorAll('.fade-in-section');
 
-// Start observing each element
-elementsToAnimate.forEach(element => {
-    fadeInObserver.observe(element);
-});
-// === 🌟 END NEW: FADE-IN ON SCROLL LOGIC 🌟 ===
+            // Start observing each element
+            elementsToAnimate.forEach(element => {
+                fadeInObserver.observe(element);
+            });
+            // === 🌟 END NEW: FADE-IN ON SCROLL LOGIC 🌟 ===
         });
 
         document.addEventListener('DOMContentLoaded', function () {

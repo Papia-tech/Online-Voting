@@ -143,7 +143,7 @@
             transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
         }
 
-        .logo a{
+        .logo a {
             cursor: pointer;
             text-decoration: none;
             color: inherit;
@@ -163,7 +163,7 @@
             font-weight: 600;
         }
 
-        .name a{
+        .name a {
             cursor: pointer;
             color: inherit;
             text-decoration: none;
@@ -197,8 +197,7 @@
             cursor: pointer;
             transition: all 0.3s ease;
         }
-
-        button a{
+        button a {
             color: inherit;
             text-decoration: none;
         }
@@ -265,7 +264,6 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            border-bottom: 0.1px solid #222;
             transition: background-color 0.3s ease, border-bottom-color 0.3s ease;
             z-index: 2;
         }
@@ -273,7 +271,6 @@
         /* LIGHT MODE .feature-section */
         body.light-mode .feature-section {
             background-color: transparent;
-            border-bottom: 0.1px solid black;
         }
 
         .feature-container {
@@ -661,6 +658,48 @@
         #closeModalBtn:hover {
             background: #555;
         }
+
+        /* Time Input Section Styling */
+        .time-input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin: 15px 0;
+        }
+
+        .time-input-label {
+            font-size: 0.9rem;
+            font-weight: bold;
+            opacity: 0.8;
+        }
+
+        .time-input {
+            width: 100%;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid #333;
+            background: #222;
+            color: #fff;
+            outline: none;
+            transition: 0.3s ease-in-out;
+        }
+
+        .time-input:focus {
+            border-color: #76ff03;
+            box-shadow: 0 0 8px rgba(118, 255, 3, 0.5);
+        }
+
+        /* Light Mode time input */
+        body.light-mode .time-input {
+            background: #ffffff;
+            border: 1px solid #888;
+            color: #000;
+        }
+
+        body.light-mode .time-input:focus {
+            border-color: #0a8f1a;
+            box-shadow: 0 0 8px rgba(10, 143, 26, 0.4);
+        }
     </style>
 </head>
 
@@ -1024,6 +1063,17 @@
                 <textarea id="voteDescription" required
                     placeholder="Brief description of the election purpose."></textarea>
 
+                <div class="time-input-group">
+                    <label class="time-input-label">Start Time</label>
+                    <input type="datetime-local" id="startTime" class="time-input">
+                </div>
+
+                <div class="time-input-group">
+                    <label class="time-input-label">End Time</label>
+                    <input type="datetime-local" id="endTime" class="time-input">
+                </div>
+
+
                 <label for="candidates">Candidates (Minimum 2)</label>
                 <div id="candidatesContainer">
                     <div class="candidate-input-group">
@@ -1049,276 +1099,276 @@
         </div>
     </div>
 
-<script>
-    // === Main Script (Runs after HTML is loaded) ===
+    <script>
+        // === Main Script (Runs after HTML is loaded) ===
 
-    document.addEventListener("DOMContentLoaded", () => {
+        document.addEventListener("DOMContentLoaded", () => {
 
-        // === 🎯 Element Declarations ===
-        const themeToggle = document.getElementById("themeToggle");
-        const logoutBtn = document.getElementById("logoutBtn"); // This element doesn't exist in the HTML, leaving for completeness
-        const signInBtn = document.getElementById("signInBtn");
-        const profileBox = document.getElementById("profileBox");
-        const logout = document.getElementById("logout"); // Profile box logout
-        
-        // --- ADDED MODAL ELEMENTS ---
-        const createVoteBtn = document.querySelector(".feature-section button"); // The "Create New Vote" button
-        const modalOverlay = document.getElementById("createVoteModal");
-        const closeModalBtn = document.getElementById("closeModalBtn");
-        const addCandidateBtn = document.getElementById("addCandidateBtn");
-        const candidatesContainer = document.getElementById("candidatesContainer");
-        const newVoteForm = document.getElementById("newVoteForm");
+            // === 🎯 Element Declarations ===
+            const themeToggle = document.getElementById("themeToggle");
+            const logoutBtn = document.getElementById("logoutBtn"); // This element doesn't exist in the HTML, leaving for completeness
+            const signInBtn = document.getElementById("signInBtn");
+            const profileBox = document.getElementById("profileBox");
+            const logout = document.getElementById("logout"); // Profile box logout
+
+            // --- ADDED MODAL ELEMENTS ---
+            const createVoteBtn = document.querySelector(".feature-section button"); // The "Create New Vote" button
+            const modalOverlay = document.getElementById("createVoteModal");
+            const closeModalBtn = document.getElementById("closeModalBtn");
+            const addCandidateBtn = document.getElementById("addCandidateBtn");
+            const candidatesContainer = document.getElementById("candidatesContainer");
+            const newVoteForm = document.getElementById("newVoteForm");
 
 
-        if (logoutBtn) {
-            logoutBtn.addEventListener("click", () => {
-                localStorage.removeItem("loggedIn");
-                localStorage.removeItem("loggedInUser");
-                window.location.href = "login.html";
-            });
-        }
-
-        if (signInBtn) {
-            signInBtn.addEventListener("click", () => {
-                const user = JSON.parse(localStorage.getItem("loggedInUser"));
-                const isLoggedIn = localStorage.getItem("loggedIn");
-
-                if (user && isLoggedIn === "true") {
-                    document.getElementById("userName").textContent = user.username;
-                    document.getElementById("userEmail").textContent = user.email || "No email found";
-                    profileBox.style.display = profileBox.style.display === "block" ? "none" : "block";
-                } else {
-                    alert("Please log in first!");
+            if (logoutBtn) {
+                logoutBtn.addEventListener("click", () => {
+                    localStorage.removeItem("loggedIn");
+                    localStorage.removeItem("loggedInUser");
                     window.location.href = "login.html";
-                }
-            });
-        }
+                });
+            }
 
-        if (profileBox && signInBtn) {
-            document.addEventListener("click", (event) => {
-                if (!profileBox.contains(event.target) && event.target !== signInBtn) {
-                    profileBox.style.display = "none";
-                }
-            });
-        }
+            if (signInBtn) {
+                signInBtn.addEventListener("click", () => {
+                    const user = JSON.parse(localStorage.getItem("loggedInUser"));
+                    const isLoggedIn = localStorage.getItem("loggedIn");
 
-        if (logout) {
-            logout.addEventListener("click", () => {
-                localStorage.removeItem("loggedIn");
-                localStorage.removeItem("loggedInUser");
-                window.location.href = "login.html";
-            });
-        }
+                    if (user && isLoggedIn === "true") {
+                        document.getElementById("userName").textContent = user.username;
+                        document.getElementById("userEmail").textContent = user.email || "No email found";
+                        profileBox.style.display = profileBox.style.display === "block" ? "none" : "block";
+                    } else {
+                        alert("Please log in first!");
+                        window.location.href = "login.html";
+                    }
+                });
+            }
 
-        if (themeToggle) {
-            themeToggle.addEventListener("click", () => {
-                document.body.classList.toggle("light-mode");
+            if (profileBox && signInBtn) {
+                document.addEventListener("click", (event) => {
+                    if (!profileBox.contains(event.target) && event.target !== signInBtn) {
+                        profileBox.style.display = "none";
+                    }
+                });
+            }
 
-                if (document.body.classList.contains("light-mode")) {
-                    themeToggle.classList.replace("fa-regular", "fa-solid");
-                    localStorage.setItem("theme", "light");
-                } else {
-                    themeToggle.classList.replace("fa-solid", "fa-regular");
-                    localStorage.setItem("theme", "dark");
-                }
-            });
-        }
+            if (logout) {
+                logout.addEventListener("click", () => {
+                    localStorage.removeItem("loggedIn");
+                    localStorage.removeItem("loggedInUser");
+                    window.location.href = "login.html";
+                });
+            }
 
-        // === 📊 Modal Open/Close Handlers ===
-        if (createVoteBtn) {
-            createVoteBtn.addEventListener("click", () => {
-                modalOverlay.style.display = "flex";
-            });
-        }
+            if (themeToggle) {
+                themeToggle.addEventListener("click", () => {
+                    document.body.classList.toggle("light-mode");
 
-        if (closeModalBtn) {
-            closeModalBtn.addEventListener("click", () => {
-                modalOverlay.style.display = "none";
-                // Optionally reset the form on close
-                newVoteForm.reset();
-                // Re-initialize candidates to the minimum required two inputs if more were added/removed
-                while (candidatesContainer.children.length > 2) {
-                    candidatesContainer.removeChild(candidatesContainer.lastChild);
-                }
-                updateRemoveButtons(); 
-            });
-        }
+                    if (document.body.classList.contains("light-mode")) {
+                        themeToggle.classList.replace("fa-regular", "fa-solid");
+                        localStorage.setItem("theme", "light");
+                    } else {
+                        themeToggle.classList.replace("fa-solid", "fa-regular");
+                        localStorage.setItem("theme", "dark");
+                    }
+                });
+            }
 
-        // Close modal if user clicks outside of it
-        if (modalOverlay) {
-            modalOverlay.addEventListener("click", (e) => {
-                if (e.target === modalOverlay) {
+            // === 📊 Modal Open/Close Handlers ===
+            if (createVoteBtn) {
+                createVoteBtn.addEventListener("click", () => {
+                    modalOverlay.style.display = "flex";
+                });
+            }
+
+            if (closeModalBtn) {
+                closeModalBtn.addEventListener("click", () => {
                     modalOverlay.style.display = "none";
+                    // Optionally reset the form on close
                     newVoteForm.reset();
-                    // Re-initialize candidates to the minimum required two inputs
+                    // Re-initialize candidates to the minimum required two inputs if more were added/removed
                     while (candidatesContainer.children.length > 2) {
                         candidatesContainer.removeChild(candidatesContainer.lastChild);
                     }
                     updateRemoveButtons();
-                }
-            });
-        }
+                });
+            }
 
-        // === ➕ Candidate Management ===
-        function updateRemoveButtons() {
-            const candidateInputs = candidatesContainer.querySelectorAll('.candidate-input-group');
-            candidateInputs.forEach((group) => {
-                const removeBtn = group.querySelector('.remove-candidate-btn');
-                // Disable removal if there are only 2 candidates (minimum required)
-                removeBtn.disabled = candidateInputs.length <= 2;
-            });
-        }
+            // Close modal if user clicks outside of it
+            if (modalOverlay) {
+                modalOverlay.addEventListener("click", (e) => {
+                    if (e.target === modalOverlay) {
+                        modalOverlay.style.display = "none";
+                        newVoteForm.reset();
+                        // Re-initialize candidates to the minimum required two inputs
+                        while (candidatesContainer.children.length > 2) {
+                            candidatesContainer.removeChild(candidatesContainer.lastChild);
+                        }
+                        updateRemoveButtons();
+                    }
+                });
+            }
 
-        function addCandidateInput() {
-            const newGroup = document.createElement('div');
-            newGroup.classList.add('candidate-input-group');
-            newGroup.innerHTML = `
+            // === ➕ Candidate Management ===
+            function updateRemoveButtons() {
+                const candidateInputs = candidatesContainer.querySelectorAll('.candidate-input-group');
+                candidateInputs.forEach((group) => {
+                    const removeBtn = group.querySelector('.remove-candidate-btn');
+                    // Disable removal if there are only 2 candidates (minimum required)
+                    removeBtn.disabled = candidateInputs.length <= 2;
+                });
+            }
+
+            function addCandidateInput() {
+                const newGroup = document.createElement('div');
+                newGroup.classList.add('candidate-input-group');
+                newGroup.innerHTML = `
                 <input type="text" name="candidate" placeholder="Candidate Name ${candidatesContainer.children.length + 1}" required>
                 <button type="button" class="remove-candidate-btn"><i class="fa-solid fa-trash"></i></button>
             `;
-            candidatesContainer.appendChild(newGroup);
-            updateRemoveButtons();
-        }
+                candidatesContainer.appendChild(newGroup);
+                updateRemoveButtons();
+            }
 
-        if (addCandidateBtn) {
-            addCandidateBtn.addEventListener("click", addCandidateInput);
-        }
+            if (addCandidateBtn) {
+                addCandidateBtn.addEventListener("click", addCandidateInput);
+            }
 
-        // Delegation to handle candidate removal
-        if (candidatesContainer) {
-            candidatesContainer.addEventListener("click", (e) => {
-                // Check if the clicked element or its trash icon parent is the remove button
-                if (e.target.closest('.remove-candidate-btn')) {
-                    const button = e.target.closest('.remove-candidate-btn');
-                    const group = button.closest('.candidate-input-group');
-                    
-                    if (!button.disabled) {
-                        group.remove();
-                        updateRemoveButtons();
-                    } else {
-                        alert("You must have a minimum of two candidates.");
-                    }
-                }
-            });
-        }
-        
-        // Initialize button state on load
-        updateRemoveButtons();
+            // Delegation to handle candidate removal
+            if (candidatesContainer) {
+                candidatesContainer.addEventListener("click", (e) => {
+                    // Check if the clicked element or its trash icon parent is the remove button
+                    if (e.target.closest('.remove-candidate-btn')) {
+                        const button = e.target.closest('.remove-candidate-btn');
+                        const group = button.closest('.candidate-input-group');
 
-
-        // === 💾 Form Submission Handling (Simulated) ===
-        if (newVoteForm) {
-            newVoteForm.addEventListener("submit", (e) => {
-                e.preventDefault();
-
-                const voteName = document.getElementById("voteName").value.trim();
-                const voteDescription = document.getElementById("voteDescription").value.trim();
-                const candidateInputs = candidatesContainer.querySelectorAll('input[name="candidate"]');
-                
-                let candidates = [];
-                let allValid = true;
-                
-                candidateInputs.forEach(input => {
-                    const name = input.value.trim();
-                    if (name) {
-                        candidates.push(name);
-                    } else {
-                        allValid = false;
+                        if (!button.disabled) {
+                            group.remove();
+                            updateRemoveButtons();
+                        } else {
+                            alert("You must have a minimum of two candidates.");
+                        }
                     }
                 });
-
-                if (!allValid) {
-                    alert("Please ensure all candidate fields are filled.");
-                    return;
-                }
-                
-                if (candidates.length < 2) {
-                    alert("Please enter a minimum of two candidate names.");
-                    return;
-                }
-                
-                // Success alert and close modal
-                alert(`New Vote Created Successfully! \nTitle: ${voteName}\nCandidates: ${candidates.join(', ')}`);
-                modalOverlay.style.display = "none";
-                newVoteForm.reset();
-                // Reset candidates back to the minimum two inputs after successful creation
-                while (candidatesContainer.children.length > 2) {
-                    candidatesContainer.removeChild(candidatesContainer.lastChild);
-                }
-                updateRemoveButtons();
-            });
-        }
-
-
-        // === Page Load / Initialization Logic ===
-        const user = JSON.parse(localStorage.getItem("loggedInUser"));
-        const isLoggedIn = localStorage.getItem("loggedIn");
-
-        if (user && isLoggedIn === "true") {
-            const welcomeEl = document.getElementById("welcome");
-            if (welcomeEl) welcomeEl.textContent = `Welcome, ${user.username}!`;
-        } else {
-            window.location.href = "login.html";
-        }
-
-        if (localStorage.getItem("theme") === "light") {
-            document.body.classList.add("light-mode");
-            if (themeToggle) {
-                themeToggle.classList.replace("fa-regular", "fa-solid");
             }
-        }
 
-        // === 🌟 NEW: FADE-IN ON SCROLL LOGIC (Intersection Observer) 🌟 ===
-        // We no longer unobserve the element, allowing it to toggle state
-        const fadeInObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                // isIntersecting is true when the element is in the viewport
-                if (entry.isIntersecting) {
-                    // FADE IN & SLIDE UP
-                    entry.target.classList.add('is-visible');
-                } else {
-                    // FADE OUT & SLIDE DOWN (The reverse animation)
-                    entry.target.classList.remove('is-visible');
+            // Initialize button state on load
+            updateRemoveButtons();
+
+
+            // === 💾 Form Submission Handling (Simulated) ===
+            if (newVoteForm) {
+                newVoteForm.addEventListener("submit", (e) => {
+                    e.preventDefault();
+
+                    const voteName = document.getElementById("voteName").value.trim();
+                    const voteDescription = document.getElementById("voteDescription").value.trim();
+                    const candidateInputs = candidatesContainer.querySelectorAll('input[name="candidate"]');
+
+                    let candidates = [];
+                    let allValid = true;
+
+                    candidateInputs.forEach(input => {
+                        const name = input.value.trim();
+                        if (name) {
+                            candidates.push(name);
+                        } else {
+                            allValid = false;
+                        }
+                    });
+
+                    if (!allValid) {
+                        alert("Please ensure all candidate fields are filled.");
+                        return;
+                    }
+
+                    if (candidates.length < 2) {
+                        alert("Please enter a minimum of two candidate names.");
+                        return;
+                    }
+
+                    // Success alert and close modal
+                    alert(`New Vote Created Successfully! \nTitle: ${voteName}\nCandidates: ${candidates.join(', ')}`);
+                    modalOverlay.style.display = "none";
+                    newVoteForm.reset();
+                    // Reset candidates back to the minimum two inputs after successful creation
+                    while (candidatesContainer.children.length > 2) {
+                        candidatesContainer.removeChild(candidatesContainer.lastChild);
+                    }
+                    updateRemoveButtons();
+                });
+            }
+
+
+            // === Page Load / Initialization Logic ===
+            const user = JSON.parse(localStorage.getItem("loggedInUser"));
+            const isLoggedIn = localStorage.getItem("loggedIn");
+
+            if (user && isLoggedIn === "true") {
+                const welcomeEl = document.getElementById("welcome");
+                if (welcomeEl) welcomeEl.textContent = `Welcome, ${user.username}!`;
+            } else {
+                window.location.href = "login.html";
+            }
+
+            if (localStorage.getItem("theme") === "light") {
+                document.body.classList.add("light-mode");
+                if (themeToggle) {
+                    themeToggle.classList.replace("fa-regular", "fa-solid");
                 }
+            }
+
+            // === 🌟 NEW: FADE-IN ON SCROLL LOGIC (Intersection Observer) 🌟 ===
+            // We no longer unobserve the element, allowing it to toggle state
+            const fadeInObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    // isIntersecting is true when the element is in the viewport
+                    if (entry.isIntersecting) {
+                        // FADE IN & SLIDE UP
+                        entry.target.classList.add('is-visible');
+                    } else {
+                        // FADE OUT & SLIDE DOWN (The reverse animation)
+                        entry.target.classList.remove('is-visible');
+                    }
+                });
+            }, {
+                // You may need to adjust the threshold for better control
+                // Threshold 0.1 means the callback fires when 10% of the element is visible/invisible
+                rootMargin: "0px",
+                threshold: 0.1
             });
-        }, {
-            // You may need to adjust the threshold for better control
-            // Threshold 0.1 means the callback fires when 10% of the element is visible/invisible
-            rootMargin: "0px",
-            threshold: 0.1
+
+            // Get all elements that should animate
+            const elementsToAnimate = document.querySelectorAll('.fade-in-section');
+
+            // Start observing each element
+            elementsToAnimate.forEach(element => {
+                fadeInObserver.observe(element);
+            });
+            // === 🌟 END NEW: FADE-IN ON SCROLL LOGIC 🌟 ===
         });
 
-        // Get all elements that should animate
-        const elementsToAnimate = document.querySelectorAll('.fade-in-section');
+        document.addEventListener('DOMContentLoaded', function () {
+            // 1. Find all the arrow buttons
+            const toggleButtons = document.querySelectorAll('.icon-box, .fa-angle-down');
 
-        // Start observing each element
-        elementsToAnimate.forEach(element => {
-            fadeInObserver.observe(element);
-        });
-        // === 🌟 END NEW: FADE-IN ON SCROLL LOGIC 🌟 ===
-    });
+            // 2. Loop through each button and attach an event listener
+            toggleButtons.forEach(button => {
+                button.addEventListener('click', function (event) {
+                    // Prevent the default link behavior if applicable, and stop propagation
+                    event.preventDefault();
+                    event.stopPropagation();
 
-    document.addEventListener('DOMContentLoaded', function () {
-        // 1. Find all the arrow buttons
-        const toggleButtons = document.querySelectorAll('.icon-box, .fa-angle-down');
+                    // 3. Find the parent card element
+                    const card = button.closest('.feature-card');
 
-        // 2. Loop through each button and attach an event listener
-        toggleButtons.forEach(button => {
-            button.addEventListener('click', function (event) {
-                // Prevent the default link behavior if applicable, and stop propagation
-                event.preventDefault();
-                event.stopPropagation();
-
-                // 3. Find the parent card element
-                const card = button.closest('.feature-card');
-
-                // 4. Toggle the 'expanded' class on the card
-                // This will trigger the CSS transitions
-                card.classList.toggle('expanded');
+                    // 4. Toggle the 'expanded' class on the card
+                    // This will trigger the CSS transitions
+                    card.classList.toggle('expanded');
+                });
             });
         });
-    });
-</script>
+    </script>
 </body>
 
 </html>
